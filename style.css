@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#container {
+  width: 500px;
+  height: 500px;
+  background-color: #000;
+  margin: 20px auto;
+}
+
+#snake {
+  width: 10px;
+  height: 10px;
+  background-color: greenyellow;
+  /* transform: translate(10px, 10px); */
+}
