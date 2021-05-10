@@ -8,7 +8,6 @@ let Apple = {x : 0 , y:0 };
 //--------- Game States ---------------
 let snakeMovement = "right";
 let Score = 0;
-let gameStatus = "Not Running";
 
 //-------- conatiner------------
 let width = 50;
@@ -20,17 +19,20 @@ let finalHeight = boxSize * height;
 let gameStateInfoHeight = 30;
 
 //----------- Setting up width and height ------------------
+
+document.getElementById("game-container").style.height= gameStateInfoHeight+  finalHeight+"px";
+document.getElementById("game-container").style.width =   finalWidth+"px";
+
 document.getElementById("game-state-info").style.width = finalWidth+"px";
 document.getElementById("game-state-info").style.height= gameStateInfoHeight+"px";
+document.getElementById("game-area").style.width = finalWidth+"px";
+document.getElementById("game-area").style.height= finalHeight+"px";
 
-document.getElementById("container").style.width = finalWidth+"px";
-document.getElementById("container").style.height= finalHeight+"px";
+document.getElementById('snakeHead').style.width = boxSize+"px";
+document.getElementById('snakeHead').style.height = boxSize+"px";
 
-document.getElementById("snake").style.width = boxSize+"px";
-document.getElementById("snake").style.height= boxSize+"px";
-
-document.getElementById("apple").style.width = boxSize+"px";
-document.getElementById("apple").style.height= boxSize+"px";
+document.getElementById('apple').style.width = boxSize+"px";
+document.getElementById('apple').style.height = boxSize+"px";
 
 //--------- Utility Functions ------------
 function isCollided(object1 , object2){
@@ -94,15 +96,28 @@ function changeSnakeDirection(event){
     }
       
   }
-function gameNotRunningKeysDetection(event)
+function gameOverKeyDetection(event)
 {
-  if(event.key == "Enter")
-  {
-    gameRestart();
-    
-  }
+  removeBody();
+  document.getElementById('game-over-text').style.opacity = "0";
+  document.removeEventListener("keydown", gameOverKeyDetection);
+
+  document.getElementById('game-panel').style.display = "none";
+  document.getElementById('main-menu').style.display = "flex";
 }
 //------ Spawn Functions --------------
+function spawnSnakeHead()
+{
+  let startingPosX = 10;
+  let startingPosY  = 10;
+  if(startingPosX >= width)
+    console.log("Error : Starting PosX of Snake Head Out of Range");
+  if(startingPosY >= height)
+    console.log("Error : Starting PosY of Snake Head Out of Range");
+  Snake.head.x = startingPosX * boxSize;
+  Snake.head.y = startingPosY * boxSize;
+  document.getElementById("snakeHead").style.transform = 'translate(' +Snake.head.x +'px ,'+Snake.head.y +'px )';
+}
 function spawnApple()
 {
   do{
@@ -114,21 +129,22 @@ function spawnApple()
   Apple.y *= boxSize;
   document.getElementById("apple").style.transform = 'translate(' +Apple.x +'px ,'+Apple.y +'px )';
 }
-function addBodyDot()
+function addBodyDot(position = {x:0 , y:0})
 {
   let snakeBody = document.createElement('div');
   snakeBody.className = "snakeBody";
-  document.getElementById('container').appendChild(snakeBody);
-  Snake.body.push({x:0 , y:0});
+  snakeBody.style.height = boxSize+"px";
+  snakeBody.style.width = boxSize+"px";
+  document.getElementById('game-area').appendChild(snakeBody);
+  Snake.body.push(position);
 }
 function removeBody()
 {
   let snakeBody =  document.getElementsByClassName('snakeBody');
-  for(let i=0 ; i<snakeBody.length ; i++)
+  while(snakeBody.length > 0 )
   {
-    snakeBody[i].parentNode.removeChild(snakeBody[i]);
+    snakeBody[0].parentNode.removeChild(snakeBody[0]);
   }
-  alert("removed Body");
 }
 
 //-------- update functions --------------
@@ -158,7 +174,7 @@ function updateScore()
     Snake.head.x -= boxSize ;
     if(Snake.head.x < 0)
     {
-      Snake.head.x = finalWidth;
+      Snake.head.x = finalWidth-boxSize;
     }
   }
   else if(snakeMovement == "up")
@@ -166,7 +182,7 @@ function updateScore()
     Snake.head.y -= boxSize ;
     if(Snake.head.y < 0)
     {
-      Snake.head.y = finalHeight;
+      Snake.head.y = finalHeight-boxSize;
     }
   }
   else if(snakeMovement == "down")
@@ -191,7 +207,7 @@ function translateBody(snakeOldHead)
 //------------- Print Functions -----------------
 function printSnakeHead()
 {
-  document.getElementById('snake').style.transform = 'translate(' +Snake.head.x +'px ,'+Snake.head.y +'px )';
+  document.getElementById('snakeHead').style.transform = 'translate(' +Snake.head.x +'px ,'+Snake.head.y +'px )';
 }
 
 function printBody()
@@ -235,48 +251,35 @@ function gameLoop()
 function gameOver()
 {
   clearInterval(threadId);
-  gameStatus = "Not Running";
   document.getElementById('game-over-text').style.opacity = "1";
   document.removeEventListener("keydown", changeSnakeDirection);
-  document.addEventListener("keydown", gameNotRunningKeysDetection);
+  document.addEventListener("keydown", gameOverKeyDetection);
+  
 }
-function gameRestart()
+
+function startGame()
 {
-  //----------- Removing GameOver Text ----------------
-  document.getElementById('game-over-text').style.opacity = "0";
-  // ----- seeting up listeners ---------------
-  document.removeEventListener("keydown", gameNotRunningKeysDetection);
-  document.addEventListener("keydown", changeSnakeDirection);
-  //------- Resetting Variables-------------
+  document.getElementById('main-menu').style.display = "none";
+  document.getElementById('game-panel').style.display = "block";
+//----------- Setting Varaiables --------------
   Snake = {head : {x:0 , y:0} , body : []};
   Apple = {x : 0 , y:0 };
   snakeMovement = "right";
   Score = 0;
-  //--------- Deleting Spawned Objects ---------------------
-  removeBody();
-  //----------- Running Game Again --------------
-  main();
-      
-}
-
-function main()
-{
-  //--------------
+  updateScore();
   spawnApple();
-  addBodyDot();
-  addBodyDot();
-  addBodyDot();
-  addBodyDot();
-  addBodyDot();
-  addBodyDot();
-  addBodyDot();
-  addBodyDot();
-  addBodyDot();
+  spawnSnakeHead();
+  for(let bodyDot = 1 ; bodyDot <= 5 ; bodyDot++)
+  {
+    addBodyDot({x: Snake.head.x-(10*bodyDot) ,y: Snake.head.y});
+  }
+  
+  
   //---------- starting Game Loop ---------------
-  gameStatus = "Running";
   document.addEventListener("keydown", changeSnakeDirection);
   threadId =  setInterval(gameLoop , 100);
 }
 
-main();
+
+
   

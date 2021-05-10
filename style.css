@@ -3,15 +3,27 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  background-color: greenyellow;
+}
+#game-container {
+  /* border: 2px solid green; */
+  margin: 20px auto;
+}
 
-#container {
+#game-panel {
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+#game-area {
   background-color: #000;
-  margin: 0 auto;
   position: relative;
 }
 #game-state-info {
-  background-color: gold;
-  margin: 20px auto 0 auto;
+  background-color: #ffe53b;
+  background-image: linear-gradient(147deg, #ffe53b 0%, #ff2525 74%);
 }
 #score {
   display: flex;
@@ -20,18 +32,17 @@
   margin-left: 10px;
 }
 
-#snake {
-  width: 10px;
-  height: 10px;
-  background-color: greenyellow;
+#snakeHead {
+  background-color: aqua ;
+  border-radius:30%;
   position: absolute;
   top: 0;
   left: 0;
+  border:1px solid black;
 }
 .snakeBody {
-  width: 10px;
-  height: 10px;
-  background-color: rgb(0, 255, 213);
+  background-color: greenyellow;
+  border:1px solid black;
   position: absolute;
   top: 0;
   left: 0;
@@ -53,4 +64,45 @@
   transform: translate(-50%, -50%);
   z-index: 23;
   opacity: 0;
+}
+
+#main-menu {
+  background-color: #ffe53b;
+  background-image: linear-gradient(147deg, #ffe53b 0%, #ff2525 74%);
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-grad {
+  background-image: linear-gradient(
+    to right,
+    #1fa2ff 0%,
+    #12d8fa 51%,
+    #1fa2ff 100%
+  );
+}
+.btn-grad {
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+  outline: none;
+  border: none;
+}
+
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
 }

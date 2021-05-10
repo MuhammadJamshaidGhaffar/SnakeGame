@@ -8,16 +8,23 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="game-state-info">
-      <div id="score">
-        <p id="score-text">Score :</p>
-        <p id="score-value">0</p>
+    <div id="game-container">
+      <div id="main-menu">
+        <button onclick="startGame()" class="btn-grad">Start Game</button>
       </div>
-    </div>
-    <div id="container">
-      <div id="snake"></div>
-      <div id="apple"></div>
-      <p id="game-over-text">Game Over</p>
+      <div id="game-panel">
+        <div id="game-state-info">
+          <div id="score">
+            <p id="score-text">Score :</p>
+            <p id="score-value">0</p>
+          </div>
+        </div>
+        <div id="game-area">
+          <div id="snakeHead"></div> 
+           <div id="apple"></div> 
+          <p id="game-over-text">Game Over</p>
+        </div>
+      </div>
     </div>
     <script src="javascript.js"></script>
   </body>
