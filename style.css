@@ -27,6 +27,9 @@ body {
 }
 #score {
   display: flex;
+  font-size:20px;
+   display:inine-block;
+   margin-left:40px;
 }
 #score #score-value {
   margin-left: 10px;
