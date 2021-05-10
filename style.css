@@ -5,15 +5,41 @@
 }
 
 #container {
-  width: 500px;
-  height: 500px;
   background-color: #000;
-  margin: 20px auto;
+  margin: 0 auto;
+  position: relative;
+}
+#game-state-info {
+  background-color: gold;
+  margin: 20px auto 0 auto;
+}
+#score {
+  display: flex;
+}
+#score #score-value {
+  margin-left: 10px;
 }
 
 #snake {
   width: 10px;
   height: 10px;
   background-color: greenyellow;
-  /* transform: translate(10px, 10px); */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.snakeBody {
+  width: 10px;
+  height: 10px;
+  background-color: rgb(0, 255, 213);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#apple {
+  background-color: red;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
